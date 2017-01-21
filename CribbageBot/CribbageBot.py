@@ -3,6 +3,7 @@
 import sys
 from random import shuffle, randint, sample
 import itertools
+import csv
 
 class Deck:
     deck = []
@@ -48,15 +49,17 @@ class Hand:
             best_hand = []
             score = 0
             for sub_hand in itertools.combinations(self.cards, 4):
-                if score_hand_4(sub_hand) > score:
+                if score_hand_4(sub_hand) >= score:
                     best_hand = sub_hand
                     score = score_hand_4(sub_hand)
-            print "Best hand is: " + ", ".join([str(x) for x in sub_hand]) + " with score: " + str(score)
+            #print "Best hand is: " + ", ".join([str(x) for x in sub_hand]) + " with score: " + str(score)
             discard = []
             for c in self.cards:
                 if c not in best_hand:
                     discard.append(c)
-            print "Discarding: " + ", ".join([str(x) for x in discard])
+            #print "Discarding: " + ", ".join([str(x) for x in discard])
+            self.cards = list(best_hand)
+            return score
 
     def play(played_you, played_opp, count):
         remaining_cards = [x for x in self.cards if x not in played_you]
@@ -103,7 +106,7 @@ def score_hand_5(cards, turned_up_card):
     return count_fifteen(cards + [turned_up_card,]) + count_pairs(cards + [turned_up_card,]) + count_run_5(cards + [turned_up_card,]) + count_nibs(cards, turned_up_card)
 
 def score_hand_4(cards):
-    return count_fifteen(cards) + count_pairs(cards) + count_run_4(cards)
+    return count_fifteen(list(cards)) + count_pairs(list(cards)) + count_run_4(list(cards))
 
 def score_hand_5_v(cards, turned_up_card):
     sum = 0
@@ -207,6 +210,7 @@ def count_run_5(cards):
         return 0
 
 def count_run_4(cards):
+    cards.sort(key=lambda x: x.ord)
     if cards[0].ord == cards[1].ord-1 == cards[2].ord-2 == cards[3].ord-3: # A 2 3 4
         return 4
     if cards[0].ord == cards[1].ord == cards[2].ord-1 == cards[3].ord-2:   # A A 2 3
@@ -249,7 +253,20 @@ def deal_and_smart_discard():
         my_hand.accept(d.deal1())
         other_hand.accept(d.deal1())
 
+    
+    kitty = Hand()
+
     my_hand.smart_discard()
+    other_hand.discard_random(kitty)
+
+    
+    turn_card = d.split()
+
+    my_hand_score = score_hand_5(my_hand.cards, turn_card)
+    if (my_hand_score > 25):
+        print "Score: " + str(my_hand_score) + " " + ", ".join([str(x) for x in my_hand.cards]) + " " + str(turn_card)
+        score_hand_5_v(my_hand.cards, turn_card)
+    return my_hand_score, score_hand_5(other_hand.cards, turn_card)
 
 def deal_and_count():
     d = Deck()
@@ -284,7 +301,13 @@ def deal_and_count():
     return my_hand, turn_card
 
 def main():
-    deal_and_smart_discard()
+    with open("out.csv", 'wb') as csvfile:
+        writer = csv.writer(csvfile)
+        for i in range(1000):
+            if i % 10 == 0:
+                print str(i/10.0) + "%"
+            x, y = deal_and_smart_discard()
+            writer.writerow([x, y])
 
 if __name__ == "__main__":
     
