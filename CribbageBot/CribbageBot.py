@@ -25,7 +25,16 @@ class Deck:
             cards.append(self.deal1())
         return cards
 
+    def rest_of_deck(self, cards):
+        rest = []
+        #print len(self.deck)
+        for c in self.deck:
+            if c not in cards:
+                rest.append(c)
+        return rest
+
     def __init__(self):
+        self.deck = []
         for suit in [u'h', u'd', u'c', u's']:
             for i, card in enumerate([u'A', u'2', u'3', u'4', u'5', u'6', u'7', u'8', u'9', u'10', u'J', u'Q', u'K']):
                 self.deck.append(Card(card, suit, min(i+1, 10), i))
@@ -59,7 +68,37 @@ class Hand:
                     discard.append(c)
             #print "Discarding: " + ", ".join([str(x) for x in discard])
             self.cards = list(best_hand)
-            return score
+            return self.cards
+
+    def statistical_discard(self, other_cards):
+        vals_only = [x.numeric_value for x in other_cards]
+        options = []
+        for sub_hand in itertools.combinations(self.cards, 4):  
+            for card in other_cards:
+                options.append((sub_hand, card, score_hand_5(list(sub_hand), card), vals_only.count(card.numeric_value) / 46.0))
+                #print "Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
+        options.sort(key=lambda x: (x[2], x[1]), reverse=True)
+        #print "Top"
+        #for i in range(30):
+        #    print "<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}%".format(str(options[i][1]), options[i][2], 100*options[i][3])
+
+        self.cards = list(options[0][0])
+        return self.cards
+
+    def statistical_discard_2(self, other_cards):
+        vals_only = [x.numeric_value for x in other_cards]
+        options = []
+        for sub_hand in itertools.combinations(self.cards, 4):  
+            for card in other_cards:
+                options.append((sub_hand, card, score_hand_5(list(sub_hand), card), vals_only.count(card.numeric_value) / 46.0))
+                #print "Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
+        options.sort(key=lambda x: (x[1], x[2]), reverse=True)
+        #print "Top"
+        #for i in range(30):
+        #    print "<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}%".format(str(options[i][1]), options[i][2], 100*options[i][3])
+
+        self.cards = list(options[0][0])
+        return self.cards
 
     def play(played_you, played_opp, count):
         remaining_cards = [x for x in self.cards if x not in played_you]
@@ -240,6 +279,35 @@ def redeal():
     my_hand.sort()
     return my_hand
 
+def deal_and_statistical_discard():
+    d = Deck()
+    d.shuffle()
+
+    my_hand = Hand()
+    other_hand = Hand()
+    third_hand = Hand()
+
+    my_hand.sort()
+    
+    for i in range(6):
+        my_hand.accept(d.deal1())
+        other_hand.accept(d.deal1())
+        third_hand.accept(d.deal1())
+
+    kitty = Hand()
+
+    my_hand.statistical_discard(d.rest_of_deck(my_hand.cards))
+    other_hand.statistical_discard_2(d.rest_of_deck(my_hand.cards))
+    #other_hand.smart_discard()
+    third_hand.discard_random(kitty)
+
+    turn_card = d.split()
+
+    my_hand_score = score_hand_5(my_hand.cards, turn_card)
+    other_hand_score = score_hand_5(other_hand.cards, turn_card)
+    return my_hand_score, other_hand_score, score_hand_5(third_hand.cards, turn_card)
+
+
 def deal_and_smart_discard():
     d = Deck()
     d.shuffle()
@@ -300,7 +368,7 @@ def deal_and_count():
     #    print turn_card
     return my_hand, turn_card
 
-def main():
+def compare_smart_and_dumb():
     with open("out.csv", 'wb') as csvfile:
         writer = csv.writer(csvfile)
         for i in range(1000):
@@ -308,6 +376,41 @@ def main():
                 print str(i/10.0) + "%"
             x, y = deal_and_smart_discard()
             writer.writerow([x, y])
+
+def main():
+    with open("out.csv", 'wb') as csvfile:
+        writer = csv.writer(csvfile)
+        for i in range(100):
+            if i % 1 == 0:
+                print str(i/1.0) + "%"
+            x, y, z = deal_and_statistical_discard()
+            writer.writerow([x, y, z])
+'''
+def main():
+    d = Deck()
+    d.shuffle()
+
+    my_hand = Hand()
+    other_hand = Hand()
+
+    my_hand.sort()
+    
+    for i in range(6):
+        my_hand.accept(d.deal1())
+        other_hand.accept(d.deal1())
+
+    others = d.rest_of_deck(my_hand.cards)
+
+    score = my_hand.statistical_discard(others)
+
+    vals_only = [x.numeric_value for x in others]
+
+    print "Base score: " + str(score)
+    print "Hand: " + ", ".join([str(x) for x in my_hand.cards])
+
+    
+    print len(others)
+'''
 
 if __name__ == "__main__":
     
