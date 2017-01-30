@@ -32,7 +32,7 @@ class Deck:
 
     def rest_of_deck(self, cards):
         rest = []
-        #print len(self.deck)
+        #print(len(self.deck)
         for c in self.deck:
             if c not in cards:
                 rest.append(c)
@@ -114,12 +114,12 @@ class Hand:
                 if score_hand_4(sub_hand) >= score:
                     best_hand = sub_hand
                     score = score_hand_4(sub_hand)
-            #print "Best hand is: " + ", ".join([str(x) for x in sub_hand]) + " with score: " + str(score)
+            #print("Best hand is: " + ", ".join([str(x) for x in sub_hand]) + " with score: " + str(score)
             discard = []
             for c in self.cards:
                 if c not in best_hand:
                     discard.append(c)
-            #print "Discarding: " + ", ".join([str(x) for x in discard])
+            #print("Discarding: " + ", ".join([str(x) for x in discard])
             self.cards = list(best_hand)
             return self.cards
 
@@ -129,11 +129,11 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 options.append((sub_hand, card, score_hand_5(list(sub_hand), card), vals_only.count(card.numeric_value) / 46.0))
-                #print "Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
+                #print("Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
         options.sort(key=lambda x: (x[3], x[2]), reverse=True)
-        #print "Top"
+        #print("Top"
         #for i in range(5):
-        #    print "<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}% {3}".format(str(options[i][1]), options[i][2], 100*options[i][3], score_hand_4(list(options[i][0])))
+        #    print("<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}% {3}".format(str(options[i][1]), options[i][2], 100*options[i][3], score_hand_4(list(options[i][0])))
 
         self.cards = list(options[0][0])
         return self.cards
@@ -144,11 +144,11 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 options.append((sub_hand, card, score_hand_5(list(sub_hand), card), vals_only.count(card.numeric_value) / 46.0))
-                #print "Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
+                #print("Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
         options.sort(key=lambda x: (x[2], x[3]), reverse=True)
-        print "Top"
+        print("Top")
         for i in range(5):
-            print "<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}% {3}".format(str(options[i][1]), options[i][2], 100*options[i][3], score_hand_4(list(options[i][0])))
+            print("<" + ", ".join([str(x) for x in options[i][0]]) + ">\t{0}, {1}, {2:.2f}% {3}".format(str(options[i][1]), options[i][2], 100*options[i][3], score_hand_4(list(options[i][0]))))
 
         self.cards = list(options[0][0])
         return self.cards
@@ -164,12 +164,12 @@ class Hand:
                 else:
                     p[(sub_hand, score)] = 1/46.0
 
-        #print "Top by Points"
+        #print("Top by Points"
         new_options = [(x[0][0], x[0][1], x[1]) for x in p.items()]
         # new options is [sub_hand, points, percentage]
         new_options.sort(key=lambda x: (x[1], x[2]), reverse=True)
         #for i in range(10):
-        #    print "<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
+        #    print("<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
 
         self.cards = list(new_options[0][0])
         return self.cards
@@ -185,12 +185,12 @@ class Hand:
                 else:
                     p[(sub_hand, score)] = 1/46.0
 
-        #print "Top by Percentage"
+        #print("Top by Percentage"
         new_options = [(x[0][0], x[0][1], x[1]) for x in p.items()]
         # new options is [sub_hand, points, percentage]
         new_options.sort(key=lambda x: (x[2], x[1]), reverse=True)
         #for i in range(10):
-        #    print "<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
+        #    print("<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
 
         self.cards = list(new_options[0][0])
         return self.cards
@@ -208,12 +208,12 @@ class Hand:
                 else:
                     p[sub_hand] = [1/46.0, score, 1.0]
 
-        #print "Top by Percentage"
+        #print("Top by Percentage"
         new_options = [(x[0], x[1][1]/x[1][2], x[1][0]) for x in p.items()]
         # new options is [sub_hand, points, percentage]
         new_options.sort(key=lambda x: (x[1], x[2]), reverse=True)
         #for i in range(min(len(new_options_2), 15)):
-        #    print "<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
+        #    print("<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
         
         self.cards = list(new_options[0][0])
         return self.cards
@@ -243,13 +243,13 @@ class Hand:
 
         # resulting dict is key[hand] = blended score
         opt = [(x[0], x[1]) for x in q.items()]
-        #print "Top by blended average"
+        #print("Top by blended average"
         opt.sort(key=lambda x: x[1], reverse=True)
         #for i in range(5):
-        #    print "<" + ", ".join([str(x) for x in opt[i][0]]) + ">\t{0}".format(str(opt[i][1]))
+        #    print("<" + ", ".join([str(x) for x in opt[i][0]]) + ">\t{0}".format(str(opt[i][1]))
 
         self.cards = list(opt[0][0])
-        print "Expecting: ~{0:.2f}".format(opt[0][1])
+        print("Expecting: ~{0:.2f}".format(opt[0][1]))
         return self.cards
 
     def statistical_discard_3(self, other_cards):
@@ -270,7 +270,7 @@ class Hand:
 
                 #options.append([sub_hand, card, score_hand_5(list(sub_hand), card), 1/46.0])
                 #options.append((sub_hand, card, score_hand_5(list(sub_hand), card), vals_only.count(card.numeric_value) / 46.0))
-                #print "Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
+                #print("Turned: {0} scored: {1} percentage: {2:.2f}%".format(str(card), score_hand_5(list(sub_hand), card), (100 * vals_only.count(card.numeric_value) / 46.0))
 
         q = {}
         for key in p.keys(): # key will be (sub_hand, score)
@@ -281,11 +281,11 @@ class Hand:
 
         # resulting dict is key[hand] = blended score
         opt = [(x[0], x[1]) for x in q.items()]
-        print len(q.items())
-        print "Top by blended average"
+        print(len(q.items()))
+        print("Top by blended average")
         opt.sort(key=lambda x: x[1], reverse=True)
         for i in range(5):
-            print "<" + ", ".join([str(x) for x in opt[i][0]]) + ">\t{0}".format(str(opt[i][1]))
+            print("<" + ", ".join([str(x) for x in opt[i][0]]) + ">\t{0}".format(str(opt[i][1])))
         # So now we know the top scoring hands possible
         # but different points are not combined. for instance:
         # <10d, Qs, Qh, Jh>	16, 15.22%
@@ -297,20 +297,20 @@ class Hand:
         new_options_2 = [(x[0], x[1][1]/x[1][2], x[1][0]) for x in q.items()]
         # new options is [sub_hand, points, percentage]
         
-        print "Top by average, total: " + str(len(new_options_2))
+        print("Top by average, total: " + str(len(new_options_2)))
         new_options_2.sort(key=lambda x: (x[1], x[2]), reverse=True)
         for i in range(min(len(new_options_2), 15)):
-            print "<" + ", ".join([str(x) for x in new_options_2[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options_2[i][1]), 100*new_options_2[i][2])
+            print("<" + ", ".join([str(x) for x in new_options_2[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options_2[i][1]), 100*new_options_2[i][2]))
         
-        print "Top by Points, total: " + str(len(new_options))
+        print("Top by Points, total: " + str(len(new_options)))
         new_options.sort(key=lambda x: (x[1], x[2]), reverse=True)
         for i in range(10):
-            print "<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
+            print("<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2]))
         
-        print "Top by reality"
+        print("Top by reality")
         new_options.sort(key=lambda x: (x[2], x[1]), reverse=True)
         for i in range(10):
-            print "<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2])
+            print("<" + ", ".join([str(x) for x in new_options[i][0]]) + ">\t{0}, {1:.2f}%".format(str(new_options[i][1]), 100*new_options[i][2]))
 
         self.cards = list(options[0][0])
         return self.cards
@@ -362,19 +362,19 @@ def score_hand_4(cards):
 def score_hand_5_v(cards, turned_up_card):
     sum = 0
     fifteen = count_fifteen(cards + [turned_up_card,])
-    print "Fifteen for: " + str(fifteen)
+    print("Fifteen for: " + str(fifteen))
     sum += fifteen
 
     pairs = count_pairs(cards + [turned_up_card,])
-    print "Pairs for: " + str(pairs)
+    print("Pairs for: " + str(pairs))
     sum += pairs
 
     run = count_run_5(cards + [turned_up_card,])
-    print "Run for: " + str(run)
+    print("Run for: " + str(run))
     sum += run
     
     nibs = count_nibs(cards, turned_up_card)
-    print "Nibs for " + str(nibs)
+    print("Nibs for " + str(nibs))
     sum += nibs
 
     return sum
@@ -420,8 +420,8 @@ def count_run_simple(cards):
 
 def count_run_5(cards):
     if len(cards) != 5:
-        print len(cards)
-        print ", ".join([str(x) for x in cards])
+        print(len(cards)
+        print(", ".join([str(x) for x in cards])))
     cards.sort(key=lambda x: x.ord)
     if cards[0].ord == cards[1].ord-1 == cards[2].ord-2 == cards[3].ord-3 == cards[4].ord-4: # A 2 3 4 5
         return 5
@@ -551,7 +551,7 @@ def deal_and_smart_discard():
 
     my_hand_score = score_hand_5(my_hand.cards, turn_card)
     if (my_hand_score > 25):
-        print "Score: " + str(my_hand_score) + " " + ", ".join([str(x) for x in my_hand.cards]) + " " + str(turn_card)
+        print("Score: " + str(my_hand_score) + " " + ", ".join([str(x) for x in my_hand.cards]) + " " + str(turn_card))
         score_hand_5_v(my_hand.cards, turn_card)
     return my_hand_score, score_hand_5(other_hand.cards, turn_card)
 
@@ -577,14 +577,14 @@ def deal_and_count():
 
     turn_card = d.split()
 
-    #print "my score: " + str(score_hand_5(my_hand.cards+[turn_card,]))
-    #print "other score: " + str(score_hand_5(other_hand.cards+[turn_card,]))
-    #print "kitty score: " + str(score_hand_5(kitty.cards+[turn_card,]))
+    #print("my score: " + str(score_hand_5(my_hand.cards+[turn_card,]))
+    #print("other score: " + str(score_hand_5(other_hand.cards+[turn_card,]))
+    #print("kitty score: " + str(score_hand_5(kitty.cards+[turn_card,]))
     my_score = score_hand_5(my_hand.cards, turn_card)
     #if my_score >= 10:
-    #    print "Yay got a decent hand: " + str(my_score)
-    #    print my_hand
-    #    print turn_card
+    #    print("Yay got a decent hand: " + str(my_score)
+    #    print(my_hand
+    #    print(turn_card
     return my_hand, turn_card
 
 def compare_smart_and_dumb():
@@ -592,7 +592,7 @@ def compare_smart_and_dumb():
         writer = csv.writer(csvfile)
         for i in range(1000):
             if i % 10 == 0:
-                print str(i/10.0) + "%"
+                print(str(i/10.0) + "%")
             x, y = deal_and_smart_discard()
             writer.writerow([x, y])
 
@@ -607,13 +607,13 @@ def play():
         cards = x.split(",")
         for c in cards:
             h.accept(d.deal1_s(c))
-        print "Hand: <" + ", ".join([str(x) for x in h.cards]) + ">"
+        print("Hand: <" + ", ".join([str(x) for x in h.cards]) + ">")
         h.statistical_discard_weighted_average(d.rest_of_deck(h.cards))
-        print "Keep: <" + ", ".join([str(x) for x in h.cards]) + ">"
+        print("Keep: <" + ", ".join([str(x) for x in h.cards]) + ">")
 
         x = raw_input("Enter turned card: ")
         turn_card = d.deal1_s(x)
-        print "Hand score: " + str(score_hand_5_v(h.cards, turn_card))
+        print("Hand score: " + str(score_hand_5_v(h.cards, turn_card)))
 
 def main():
     x, y, z = deal_and_statistical_discard()
@@ -622,7 +622,7 @@ def main():
         writer = csv.writer(csvfile)
         for i in range(1000):
             if i % 10 == 0:
-                print str(i/10.0) + "%"
+                print(str(i/10.0) + "%")
             x, y, z = deal_and_statistical_discard()
             writer.writerow([x, y, z])
     
@@ -658,18 +658,18 @@ def play_round(im_on_first, p1_score, p2_score):
         turn_card = d.split()
 
         hand_score = score_hand_5(other_hand.cards, turn_card)
-        print "Other hand: " + str(hand_score)
+        print("Other hand: " + str(hand_score))
         other_score += hand_score
-        print "other player pegs: " + str(other_score)
+        print("other player pegs: " + str(other_score))
 
         hand_score = score_hand_5(my_hand.cards, turn_card)
-        print "my hand: " + str(hand_score)
+        print("my hand: " + str(hand_score))
         my_score += hand_score
 
         hand_score = score_hand_5(kitty.cards, turn_card)
-        print "kitty score: " + str(hand_score)
+        print("kitty score: " + str(hand_score))
         my_score += hand_score
-        print "your player pegs: " + str(my_score)
+        print("your player pegs: " + str(my_score))
     else:
         for i in range(6):
             other_hand.accept(d.deal1())
@@ -693,18 +693,18 @@ def play_round(im_on_first, p1_score, p2_score):
         turn_card = d.split()
 
         hand_score = score_hand_5(my_hand.cards, turn_card)
-        print "Other hand: " + str(hand_score)
+        print("Other hand: " + str(hand_score))
         my_score += hand_score
-        print "other player pegs: " + str(my_score)
+        print("other player pegs: " + str(my_score))
 
         hand_score = score_hand_5(other_hand.cards, turn_card)
-        print "my hand: " + str(hand_score)
+        print("my hand: " + str(hand_score))
         other_score += hand_score
 
         hand_score = score_hand_5(kitty.cards, turn_card)
-        print "kitty score: " + str(hand_score)
+        print("kitty score: " + str(hand_score))
         other_score += hand_score
-        print "your player pegs: " + str(other_score)
+        print("your player pegs: " + str(other_score))
     return my_score + p1_score, other_score + p2_score
 
 def play_against_human(my_hand, human_p1=False):
@@ -733,7 +733,7 @@ def play_against_human(my_hand, human_p1=False):
             else:
                 card, points, sum = my_hand.play_1(sum, played_cards, total_played)
             if points == 0 and card is None:
-                print "p1 Go" # other player gets a point
+                print("p1 Go") # other player gets a point
                 goed_1 = 1
                 played_cards = []
             else:
@@ -741,9 +741,9 @@ def play_against_human(my_hand, human_p1=False):
                 p1_score += points
                 total_played.append(card)
                 played_cards.append(card)
-                print "p1 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p1_score) + ")"
+                print("p1 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p1_score) + ")")
         else:
-            print "P2 leading"
+            print("P2 leading")
         p2_leads = False
         
         if not human_p1:
@@ -758,7 +758,7 @@ def play_against_human(my_hand, human_p1=False):
         else:
             card, points, sum = other_hand.play_1(sum, played_cards, total_played)
         if points == 0 and card is None:
-            print "p2 Go" # other player gets a point
+            print("p2 Go") # other player gets a point
             goed_2 = 1
             played_cards = []
         else:
@@ -766,7 +766,7 @@ def play_against_human(my_hand, human_p1=False):
             p2_score += points
             total_played.append(card)
             played_cards.append(card)
-            print "p2 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p2_score) + ")"
+            print("p2 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p2_score) + ")")
 
         if goed_1 + goed_2 == 2:
             goed_1 = 0
@@ -776,20 +776,20 @@ def play_against_human(my_hand, human_p1=False):
             if last_to_play == 1:
                 p2_leads = True
                 p1_score += 1
-                print "p1 gets the point" + " (" + str(p1_score) + ")"
+                print("p1 gets the point" + " (" + str(p1_score) + ")")
             else:
                 p2_score += 1
-                print "p2 gets the point" + " (" + str(p2_score) + ")"
+                print("p2 gets the point" + " (" + str(p2_score) + ")")
 
     if last_to_play == 1:
         p1_score += 1
-        print "p1 gets the point for last card" + " (" + str(p1_score) + ")"
+        print("p1 gets the point for last card" + " (" + str(p1_score) + ")")
     else:
         p2_score += 1
-        print "p2 gets the point for last card" + " (" + str(p2_score) + ")"
+        print("p2 gets the point for last card" + " (" + str(p2_score) + ")")
 
-    print "p1 got: " + str(p1_score)
-    print "p2 got: " + str(p2_score)
+    print("p1 got: " + str(p1_score))
+    print("p2 got: " + str(p2_score))
 
 def play_hands(my_hand=None, other_hand=None):
     d = Deck()
@@ -828,7 +828,7 @@ def play_hands(my_hand=None, other_hand=None):
         if not p2_leads:
             card, points, sum = my_hand.play_1(sum, played_cards, total_played)
             if points == 0 and card is None:
-                print "p1 Go" # other player gets a point
+                print("p1 Go") # other player gets a point
                 goed_1 = 1
                 played_cards = []
             else:
@@ -836,14 +836,14 @@ def play_hands(my_hand=None, other_hand=None):
                 p1_score += points
                 total_played.append(card)
                 played_cards.append(card)
-                print "p1 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p1_score) + ")"
+                print("p1 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p1_score) + ")")
         else:
-            print "P2 leading"
+            print("P2 leading")
         p2_leads = False
 
         card, points, sum = other_hand.play_1(sum, played_cards, total_played)
         if points == 0 and card is None:
-            print "p2 Go" # other player gets a point
+            print("p2 Go") # other player gets a point
             goed_2 = 1
             played_cards = []
         else:
@@ -851,7 +851,7 @@ def play_hands(my_hand=None, other_hand=None):
             p2_score += points
             total_played.append(card)
             played_cards.append(card)
-            print "p2 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p2_score) + ")"
+            print("p2 played: " + str(card) + " " + str(sum) + " for " + str(points) + " (" + str(p2_score) + ")")
 
         if goed_1 + goed_2 == 2:
             goed_1 = 0
@@ -861,20 +861,20 @@ def play_hands(my_hand=None, other_hand=None):
             if last_to_play == 1:
                 p2_leads = True
                 p1_score += 1
-                print "p1 gets the point" + " (" + str(p1_score) + ")"
+                print("p1 gets the point" + " (" + str(p1_score) + ")")
             else:
                 p2_score += 1
-                print "p2 gets the point" + " (" + str(p2_score) + ")"
+                print("p2 gets the point" + " (" + str(p2_score) + ")")
 
     if last_to_play == 1:
         p1_score += 1
-        print "p1 gets the point for last card" + " (" + str(p1_score) + ")"
+        print("p1 gets the point for last card" + " (" + str(p1_score) + ")")
     else:
         p2_score += 1
-        print "p2 gets the point for last card" + " (" + str(p2_score) + ")"
+        print("p2 gets the point for last card" + " (" + str(p2_score) + ")")
 
-    print "I got: " + str(p1_score)
-    print "other got: " + str(p2_score)
+    print("I got: " + str(p1_score))
+    print("other got: " + str(p2_score))
 
     return p1_score, p2_score
     #for i in range(6):
@@ -904,11 +904,11 @@ def main():
 
     vals_only = [x.numeric_value for x in others]
 
-    print "Base score: " + str(score)
-    print "Hand: " + ", ".join([str(x) for x in my_hand.cards])
+    print("Base score: " + str(score)
+    print("Hand: " + ", ".join([str(x) for x in my_hand.cards])
 
     
-    print len(others)
+    print(len(others)
 '''
 
 if __name__ == "__main__":
@@ -918,5 +918,5 @@ if __name__ == "__main__":
     i = 2
     while my_score < 120 and other_score < 120:
         my_score, other_score = play_round(i % 2 == 0, my_score, other_score)
-        print "SCORE: {0} | {1}".format(my_score, other_score)
+        print("SCORE: {0} | {1}".format(my_score, other_score))
         i += 1
