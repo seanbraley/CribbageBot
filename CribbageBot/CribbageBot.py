@@ -40,8 +40,8 @@ class Deck:
 
     def __init__(self):
         self.deck = []
-        for suit in [u'h', u'd', u'c', u's']:
-            for i, card in enumerate([u'A', u'2', u'3', u'4', u'5', u'6', u'7', u'8', u'9', u'10', u'J', u'Q', u'K']):
+        for suit in ['h', 'd', 'c', 's']:
+            for i, card in enumerate(['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']):
                 self.deck.append(Card(card, suit, min(i+1, 10), i))
 
 class Card:
@@ -53,7 +53,7 @@ class Card:
         self.ord = ord
 
     def __str__(self):
-        return unicode(self.value + self.suit)
+        return self.value + self.suit
 
 class Hand:
     def play_1(self, sum, played_cards, total_played):
@@ -159,7 +159,7 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 score = score_hand_5(list(sub_hand), card)
-                if p.has_key((sub_hand, score)):
+                if (sub_hand, score) in p:
                     p[(sub_hand, score)] += 1/46.0
                 else:
                     p[(sub_hand, score)] = 1/46.0
@@ -180,7 +180,7 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 score = score_hand_5(list(sub_hand), card)
-                if p.has_key((sub_hand, score)):
+                if (sub_hand, score) in p:
                     p[(sub_hand, score)] += 1/46.0
                 else:
                     p[(sub_hand, score)] = 1/46.0
@@ -201,7 +201,7 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 score = score_hand_5(list(sub_hand), card)
-                if p.has_key(sub_hand):
+                if sub_hand in p:
                     p[sub_hand][0] += 1/46.0
                     p[sub_hand][1] += score
                     p[sub_hand][2] += 1.0
@@ -229,14 +229,14 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 score = score_hand_5(list(sub_hand), card)
-                if p.has_key((sub_hand, score)):
+                if (sub_hand, score) in p:
                     p[(sub_hand, score)] += 1/46.0
                 else:
                     p[(sub_hand, score)] = 1/46.0
                 q = {}
 
         for key in p.keys(): # key will be (sub_hand, score)
-            if key[0] in q.keys(): # if we have hand already
+            if key[0] in q.keys(): # if we have hahasnd already
                 q[key[0]] += key[1]*p[key] # add the score multiplied by the percentage chance
             else:
                 q[key[0]] = key[1]*p[key]
@@ -263,7 +263,7 @@ class Hand:
         for sub_hand in itertools.combinations(self.cards, 4):  
             for card in other_cards:
                 score = score_hand_5(list(sub_hand), card)
-                if p.has_key((sub_hand, score)):
+                if (sub_hand, score) in p:
                     p[(sub_hand, score)] += 1/46.0
                 else:
                     p[(sub_hand, score)] = 1/46.0
@@ -420,8 +420,8 @@ def count_run_simple(cards):
 
 def count_run_5(cards):
     if len(cards) != 5:
-        print(len(cards)
-        print(", ".join([str(x) for x in cards])))
+        print(len(cards))
+        print(", ".join([str(x) for x in cards]))
     cards.sort(key=lambda x: x.ord)
     if cards[0].ord == cards[1].ord-1 == cards[2].ord-2 == cards[3].ord-3 == cards[4].ord-4: # A 2 3 4 5
         return 5
